@@ -6,30 +6,54 @@ export default function GameLibraryApp() {
   const [games, setGames] = useState([]);
   const [search, setSearch] = useState("");
 
+  // ✅ Proper case function
+  const toTitleCase = (str) => {
+    return str
+      ?.trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .map((word) => {
+        const smallWords = ["of", "the", "and", "in", "on"];
+        if (smallWords.includes(word)) return word;
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+  };
+
+  // 📡 Fetch from Google Sheets
   useEffect(() => {
-    fetch("https://opensheet.elk.sh/1G66a7iv9rM3W5oXpQ6OiWm34B3vPd_-aj3pARmHBg6k/1")
-      .then(res => res.json())
-      .then(data => {
-        const formatted = data.map((g, i) => ({
-          id: i,
-          name: g.Name,
-          console: g.Console,
-          collector: String(g.Collector).toLowerCase() === "true"
-        })).sort((a, b) => a.name.localeCompare(b.name));
+    fetch(
+      "https://opensheet.elk.sh/1G66a7iv9rM3W5oXpQ6OiWm34B3vPd_-aj3pARmHBg6k/1"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const formatted = data
+          .map((g, i) => ({
+            id: i,
+            name: toTitleCase(g.Name), // 👈 applied here
+            console: g.Console,
+            collector:
+              String(g.Collector).toLowerCase() === "true",
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
         setGames(formatted);
       });
   }, []);
 
-  const filteredGames = games.filter(g =>
+  // 🔍 Filter
+  const filteredGames = games.filter((g) =>
     g.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const ps = games.filter(g => g.console === "PS").length;
-  const xbox = games.filter(g => g.console === "XBOX").length;
-  const sw = games.filter(g => g.console === "SWITCH").length;
+  // 📊 Counters
+  const ps = games.filter((g) => g.console === "PS").length;
+  const xbox = games.filter((g) => g.console === "XBOX").length;
+  const sw = games.filter((g) => g.console === "SWITCH").length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-6">
+      
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -37,7 +61,9 @@ export default function GameLibraryApp() {
         className="flex items-center gap-3 mb-10"
       >
         <Gamepad2 className="text-purple-400" />
-        <h1 className="text-4xl font-bold">Shared Game Vault</h1>
+        <h1 className="text-4xl font-bold">
+          Shared Game Vault
+        </h1>
       </motion.div>
 
       {/* Counters */}
@@ -45,22 +71,29 @@ export default function GameLibraryApp() {
         {[
           { label: "PlayStation", count: ps },
           { label: "Xbox", count: xbox },
-          { label: "Switch", count: sw }
+          { label: "Switch", count: sw },
         ].map((item, i) => (
           <motion.div
             key={i}
             whileHover={{ scale: 1.05 }}
-            className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-2xl p-6 shadow-lg flex flex-col justify-center items-center text-center"
+            className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-2xl p-6 shadow-lg flex flex-col items-center text-center"
           >
-            <p className="text-gray-400 text-sm">{item.label}</p>
-            <h2 className="text-3xl font-bold mt-2">{item.count}</h2>
+            <p className="text-gray-400 text-sm">
+              {item.label}
+            </p>
+            <h2 className="text-3xl font-bold mt-2">
+              {item.count}
+            </h2>
           </motion.div>
         ))}
       </div>
 
       {/* Search */}
       <div className="relative mb-8 max-w-xl">
-        <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+        <Search
+          className="absolute left-3 top-3 text-gray-400"
+          size={18}
+        />
         <input
           className="w-full pl-10 p-3 rounded-xl bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="Search your collection..."
@@ -85,11 +118,17 @@ export default function GameLibraryApp() {
                 key={g.id}
                 className="border-t border-gray-800 hover:bg-gray-800/40 transition"
               >
-                <td className="p-4 font-medium">{g.name}</td>
-                <td className="p-4">{g.console}</td>
+                <td className="p-4 font-medium">
+                  {g.name}
+                </td>
+                <td className="p-4">
+                  {g.console}
+                </td>
                 <td className="p-4">
                   {g.collector ? (
-                    <span className="text-yellow-400">⭐ Collector</span>
+                    <span className="text-yellow-400">
+                      ⭐ Collector
+                    </span>
                   ) : (
                     "Standard"
                   )}
