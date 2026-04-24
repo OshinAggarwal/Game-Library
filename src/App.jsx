@@ -16,12 +16,13 @@ export default function GameLibraryApp() {
       .map((word) => {
         const smallWords = ["of", "the", "and", "in", "on"];
         if (smallWords.includes(word)) return word;
+
         return word.charAt(0).toUpperCase() + word.slice(1);
       })
       .join(" ");
   };
 
-  // Fetch Google Sheet data
+  // Fetch Google Sheets data
   useEffect(() => {
     fetch(
       "https://opensheet.elk.sh/1G66a7iv9rM3W5oXpQ6OiWm34B3vPd_-aj3pARmHBg6k/1"
@@ -39,7 +40,8 @@ export default function GameLibraryApp() {
           .sort((a, b) => a.name.localeCompare(b.name));
 
         setGames(formatted);
-      });
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   // Filter logic
@@ -55,6 +57,7 @@ export default function GameLibraryApp() {
     return matchesSearch && matchesPlatform;
   });
 
+  // Platform counts
   const psCount = games.filter(
     (g) => g.console === "PS"
   ).length;
@@ -79,7 +82,7 @@ export default function GameLibraryApp() {
         />
 
         <div className="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-center px-4">
-
+          
           <h1 className="text-5xl md:text-6xl font-bold text-purple-400 mb-4">
             My Game Vault
           </h1>
@@ -88,12 +91,12 @@ export default function GameLibraryApp() {
             Track your legendary collection across platforms
           </p>
 
-          {/* Clickable Platform Logos */}
+          {/* Platform Cards */}
           <div className="flex flex-wrap justify-center gap-8">
 
             {/* PlayStation */}
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.08 }}
               onClick={() =>
                 setPlatformFilter(
                   platformFilter === "PS"
@@ -101,25 +104,26 @@ export default function GameLibraryApp() {
                     : "PS"
                 )
               }
-              className={`p-5 rounded-2xl backdrop-blur-md ${
+              className={`w-40 h-40 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
                 platformFilter === "PS"
-                  ? "bg-purple-600"
-                  : "bg-white/10"
+                  ? "bg-blue-600/80 border-blue-400"
+                  : "bg-white/10 border-white/20"
               }`}
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg"
+                src="https://cdn-icons-png.flaticon.com/512/588/588324.png"
                 alt="PlayStation"
-                className="h-12 w-12 object-contain"
+                className="w-16 h-16 object-contain"
               />
-              <p className="mt-2 text-sm">
+
+              <p className="mt-4 text-lg font-semibold">
                 {psCount} Games
               </p>
             </motion.button>
 
             {/* Xbox */}
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.08 }}
               onClick={() =>
                 setPlatformFilter(
                   platformFilter === "XBOX"
@@ -127,25 +131,26 @@ export default function GameLibraryApp() {
                     : "XBOX"
                 )
               }
-              className={`p-5 rounded-2xl backdrop-blur-md ${
+              className={`w-40 h-40 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
                 platformFilter === "XBOX"
-                  ? "bg-green-600"
-                  : "bg-white/10"
+                  ? "bg-green-600/80 border-green-400"
+                  : "bg-white/10 border-white/20"
               }`}
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg"
+                src="https://cdn-icons-png.flaticon.com/512/731/731381.png"
                 alt="Xbox"
-                className="h-12 w-12 object-contain"
+                className="w-16 h-16 object-contain"
               />
-              <p className="mt-2 text-sm">
+
+              <p className="mt-4 text-lg font-semibold">
                 {xboxCount} Games
               </p>
             </motion.button>
 
             {/* Switch */}
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.08 }}
               onClick={() =>
                 setPlatformFilter(
                   platformFilter === "SWITCH"
@@ -153,30 +158,32 @@ export default function GameLibraryApp() {
                     : "SWITCH"
                 )
               }
-              className={`p-5 rounded-2xl backdrop-blur-md ${
+              className={`w-40 h-40 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
                 platformFilter === "SWITCH"
-                  ? "bg-red-600"
-                  : "bg-white/10"
+                  ? "bg-red-600/80 border-red-400"
+                  : "bg-white/10 border-white/20"
               }`}
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Nintendo_Switch_logo.svg"
-                alt="Switch"
-                className="h-12 w-12 object-contain"
+                src="https://cdn-icons-png.flaticon.com/512/871/871397.png"
+                alt="Nintendo Switch"
+                className="w-16 h-16 object-contain"
               />
-              <p className="mt-2 text-sm">
+
+              <p className="mt-4 text-lg font-semibold">
                 {switchCount} Games
               </p>
             </motion.button>
-
           </div>
         </div>
       </div>
 
       {/* Active Filter */}
       {platformFilter !== "ALL" && (
-        <div className="mb-6 text-purple-400 font-medium text-center">
-          Showing: {platformFilter}
+        <div className="text-center mb-6">
+          <span className="text-purple-400 font-medium">
+            Showing: {platformFilter}
+          </span>
 
           <button
             onClick={() => setPlatformFilter("ALL")}
@@ -204,7 +211,7 @@ export default function GameLibraryApp() {
         />
       </div>
 
-      {/* Table */}
+      {/* Games Table */}
       <div className="bg-gray-900/70 backdrop-blur border border-gray-700 rounded-2xl shadow-lg overflow-hidden">
         <table className="w-full text-left">
           <thead className="bg-gray-800 text-gray-400 text-sm">
