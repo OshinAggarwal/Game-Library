@@ -44,7 +44,7 @@ export default function GameLibraryApp() {
       .catch((err) => console.error(err));
   }, []);
 
-  // Filter logic
+  // Search + platform filtering
   const filteredGames = games.filter((g) => {
     const matchesSearch = g.name
       .toLowerCase()
@@ -82,7 +82,7 @@ export default function GameLibraryApp() {
         />
 
         <div className="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-center px-4">
-          
+
           <h1 className="text-5xl md:text-6xl font-bold text-purple-400 mb-4">
             My Game Vault
           </h1>
@@ -104,19 +104,21 @@ export default function GameLibraryApp() {
                     : "PS"
                 )
               }
-              className={`w-40 h-40 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
+              className={`w-44 h-44 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
                 platformFilter === "PS"
                   ? "bg-blue-600/80 border-blue-400"
                   : "bg-white/10 border-white/20"
               }`}
             >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/588/588324.png"
-                alt="PlayStation"
-                className="w-16 h-16 object-contain"
-              />
+              <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-2xl font-bold">
+                PS
+              </div>
 
-              <p className="mt-4 text-lg font-semibold">
+              <h3 className="mt-4 text-lg font-semibold">
+                PlayStation
+              </h3>
+
+              <p className="text-gray-300">
                 {psCount} Games
               </p>
             </motion.button>
@@ -131,24 +133,26 @@ export default function GameLibraryApp() {
                     : "XBOX"
                 )
               }
-              className={`w-40 h-40 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
+              className={`w-44 h-44 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
                 platformFilter === "XBOX"
                   ? "bg-green-600/80 border-green-400"
                   : "bg-white/10 border-white/20"
               }`}
             >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/731/731381.png"
-                alt="Xbox"
-                className="w-16 h-16 object-contain"
-              />
+              <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-2xl font-bold">
+                X
+              </div>
 
-              <p className="mt-4 text-lg font-semibold">
+              <h3 className="mt-4 text-lg font-semibold">
+                Xbox
+              </h3>
+
+              <p className="text-gray-300">
                 {xboxCount} Games
               </p>
             </motion.button>
 
-            {/* Switch */}
+            {/* Switch 2 */}
             <motion.button
               whileHover={{ scale: 1.08 }}
               onClick={() =>
@@ -158,19 +162,21 @@ export default function GameLibraryApp() {
                     : "SWITCH"
                 )
               }
-              className={`w-40 h-40 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
+              className={`w-44 h-44 rounded-3xl flex flex-col items-center justify-center backdrop-blur-xl border transition ${
                 platformFilter === "SWITCH"
                   ? "bg-red-600/80 border-red-400"
                   : "bg-white/10 border-white/20"
               }`}
             >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/871/871397.png"
-                alt="Nintendo Switch"
-                className="w-16 h-16 object-contain"
-              />
+              <div className="w-16 h-16 rounded-full bg-red-500 flex items-center justify-center text-2xl font-bold">
+                S2
+              </div>
 
-              <p className="mt-4 text-lg font-semibold">
+              <h3 className="mt-4 text-lg font-semibold">
+                Switch 2
+              </h3>
+
+              <p className="text-gray-300">
                 {switchCount} Games
               </p>
             </motion.button>
